@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новогодний декор 2027 — Интернет-магазин праздничных фигур</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --night-bg: #050a14;
+            --gold-glow: #ffd700;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at top, #0f203d 0%, #060b16 55%, #03060c 100%);
+            color: #1e293b;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Звездный фон */
+        .stars-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 80px 120px, #ffe875, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 150px 60px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2.5px 2.5px at 240px 180px, #93c5fd, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 310px 90px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 420px 210px, #fde047, rgba(0,0,0,0));
+            background-size: 450px 250px;
+            opacity: 0.75;
+        }
+
+        /* Падающий снег */
+        #snowCanvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Объемный серебристо-белый заголовок как на прайсе */
+        .hero-title-3d {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 45%, #94a3b8 52%, #f8fafc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 0 #1e293b) 
+                    drop-shadow(0 7px 14px rgba(0, 0, 0, 0.9))
+                    drop-shadow(0 0 22px rgba(255, 255, 255, 0.45));
+            letter-spacing: 0.03em;
+        }
+
+        .hero-subtitle-script {
+            font-family: 'Great Vibes', cursive;
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95), 0 0 18px rgba(147, 197, 253, 0.8);
+        }
+
+        /* Оформление блоков прайс-листа */
+        .price-card-container {
+            background: rgba(255, 255, 255, 0.96);
+            border: 3px solid #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 15px rgba(255, 255, 255, 0.15);
+            overflow: hidden;
+        }
+
+        /* Градиентные шапки категорий точно по цветам с картинки */
+        .header-goat {
+            background: linear-gradient(180deg, #fef08a 0%, #facc15 55%, #eab308 100%);
+            color: #1c1917;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+        }
+
+        .header-snowflakes {
+            background: linear-gradient(180deg, #bae6fd 0%, #38bdf8 55%, #0284c7 100%);
+            color: #082f49;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .header-figures {
+            background: linear-gradient(180deg, #f87171 0%, #dc2626 55%, #991b1b 100%);
+            color: #fef08a;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.65);
+        }
+
+        .header-fireplaces {
+            background: linear-gradient(180deg, #fed7aa 0%, #fb923c 55%, #ea580c 100%);
+            color: #1c1917;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .header-sleigh {
+            background: linear-gradient(180deg, #dbeafe 0%, #60a5fa 55%, #2563eb 100%);
+            color: #0f172a;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+        }
+
+        /* Таблица размеров как в прайсе */
+        .price-table th {
+            background-color: #f1f5f9;
+            border: 1px solid #94a3b8;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #0f172a;
+            padding: 5px 6px;
+        }
+
+        .price-table td {
+            border: 1px solid #cbd5e1;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 5px 8px;
+            transition: all 0.15s ease;
+        }
+
+        .price-row {
+            cursor: pointer;
+        }
+
+        .price-row:hover td {
+            background-color: #fef9c3;
+        }
+
+        .price-row.selected td {
+            background-color: #fde047 !important;
+            color: #000000;
+            border-color: #ca8a04;
+        }
+
+        /* Деревянно-коричневый фон для витрины пенопластовых фигур как на фото */
+        .showcase-wood-bg {
+            background: radial-gradient(circle at center, #a16236 0%, #6b3b1e 75%, #4a2511 100%);
+            border: 2.5px solid #ffffff;
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.45), 0 4px 10px rgba(0,0,0,0.35);
+        }
+
+        .showcase-red-bg {
+            background: radial-gradient(circle at center, #dc2626 0%, #991b1b 75%, #650d0d 100%);
+            border: 2.5px solid #ffffff;
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.45), 0 4px 10px rgba(0,0,0,0.35);
+        }
+
+        .showcase-dark-bg {
+            background: radial-gradient(circle at center, #52525b 0%, #27272a 75%, #18181b 100%);
+            border: 2.5px solid #ffffff;
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.55), 0 4px 10px rgba(0,0,0,0.35);
+        }
+
+        /* Синий бейдж с номером снежинки как на картинке */
+        .snowflake-num-badge {
+            background: radial-gradient(circle at 30% 30%, #38bdf8, #0369a1);
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            font-weight: 900;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+
+        /* Карточка товара с подсветкой выбора */
+        .item-tile {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        .item-tile:hover {
+            transform: translateY(-2px);
+        }
+        .item-tile.active-tile {
+            ring: 4px;
+            box-shadow: 0 0 0 3px #facc15, 0 8px 20px rgba(250, 204, 21, 0.55);
+        }
+
+        /* Снежный сугроб внизу страницы */
+        .snow-ground {
+            background: linear-gradient(180deg, rgba(226, 232, 240, 0) 0%, #cbd5e1 25%, #f8fafc 65%, #ffffff 100%);
+        }
+
+        /* Анимация блеска */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
+        .sparkle {
+            animation: twinkle 2.8s infinite ease-in-out;
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-yellow-300 selection:text-slate-900">
+
+    <!-- Звездное небо и падающий снег -->
+    <div class="stars-layer"></div>
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- Декоративные еловые ветки и шары по краям экрана (Desktop) -->
+    <div class="hidden xl:block fixed top-0 left-0 w-44 pointer-events-none z-10">
+        <svg viewBox="0 0 200 520" class="w-full h-auto drop-shadow-2xl">
+            <!-- Еловые ветви -->
+            <path d="M-20,0 Q90,40 140,110 Q70,95 -10,80 Z" fill="#064e3b"/>
+            <path d="M-20,50 Q110,110 155,190 Q75,165 -10,145 Z" fill="#047857"/>
+            <path d="M-20,120 Q95,190 130,280 Q65,245 -10,220 Z" fill="#065f46"/>
+            <path d="M-20,210 Q85,290 115,390 Q55,345 -10,320 Z" fill="#047857"/>
+            <path d="M-20,310 Q75,390 95,490 Q45,440 -10,415 Z" fill="#064e3b"/>
+            <!-- Золотая гирлянда -->
+            <path d="M10,20 Q90,85 35,155 T45,295 T25,435" fill="none" stroke="#fde047" stroke-width="3" stroke-dasharray="4 6"/>
+            <!-- Красный шар -->
+            <circle cx="85" cy="95" r="22" fill="url(#redBall)" stroke="#fef08a" stroke-width="1.5"/>
+            <rect x="81" y="70" width="8" height="5" fill="#facc15" rx="1"/>
+            <!-- Золотой шар -->
+            <circle cx="52" cy="185" r="19" fill="url(#goldBall)" stroke="#ffffff" stroke-width="1"/>
+            <!-- Красный шар нижний -->
+            <circle cx="68" cy="295" r="24" fill="url(#redBall)" stroke="#fef08a" stroke-width="1.5"/>
+            <defs>
+                <radialGradient id="redBall" cx="35%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#fca5a5"/>
+                    <stop offset="35%" stop-color="#dc2626"/>
+                    <stop offset="100%" stop-color="#7f1d1d"/>
+                </radialGradient>
+                <radialGradient id="goldBall" cx="35%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#fef9c3"/>
+                    <stop offset="40%" stop-color="#eab308"/>
+                    <stop offset="100%" stop-color="#854d0e"/>
+                </radialGradient>
+            </defs>
+        </svg>
+    </div>
+
+    <div class="hidden xl:block fixed top-0 right-0 w-44 pointer-events-none z-10 transform scale-x-[-1]">
+        <svg viewBox="0 0 200 520" class="w-full h-auto drop-shadow-2xl">
+            <path d="M-20,0 Q90,40 140,110 Q70,95 -10,80 Z" fill="#064e3b"/>
+            <path d="M-20,50 Q110,110 155,190 Q75,165 -10,145 Z" fill="#047857"/>
+            <path d="M-20,120 Q95,190 130,280 Q65,245 -10,220 Z" fill="#065f46"/>
+            <path d="M-20,210 Q85,290 115,390 Q55,345 -10,320 Z" fill="#047857"/>
+            <path d="M-20,310 Q75,390 95,490 Q45,440 -10,415 Z" fill="#064e3b"/>
+            <path d="M10,20 Q90,85 35,155 T45,295 T25,435" fill="none" stroke="#fde047" stroke-width="3" stroke-dasharray="4 6"/>
+            <circle cx="85" cy="95" r="22" fill="url(#redBall)" stroke="#fef08a" stroke-width="1.5"/>
+            <circle cx="52" cy="185" r="19" fill="url(#goldBall)" stroke="#ffffff" stroke-width="1"/>
+            <circle cx="68" cy="295" r="24" fill="url(#redBall)" stroke="#fef08a" stroke-width="1.5"/>
+        </svg>
+    </div>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ НАВИГАЦИИ И КОРЗИНЫ -->
+    <nav class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-yellow-400/30 shadow-xl">
+        <div class="max-w-6xl mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+            <!-- Слева: Логотип бренда -->
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="flex items-center gap-2.5 sm:gap-3 group focus:outline-none">
+                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 border-2 border-yellow-400 shadow-lg flex items-center justify-center relative overflow-hidden group-hover:scale-105 transition">
+                    <img id="brandLogoImg" src="" alt="Логотип" class="hidden w-full h-full object-cover" onerror="this.classList.add('hidden'); document.getElementById('brandLogoSvg').classList.remove('hidden');">
+                    <svg id="brandLogoSvg" viewBox="0 0 64 64" class="w-8 h-8 sm:w-9 sm:h-9 drop-shadow">
+                        <defs>
+                            <linearGradient id="logoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fef08a"/>
+                                <stop offset="50%" stop-color="#facc15"/>
+                                <stop offset="100%" stop-color="#ca8a04"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Объемная снежинка и звезда -->
+                        <g stroke="#ffffff" stroke-width="3.2" stroke-linecap="round">
+                            <line x1="32" y1="8" x2="32" y2="56"/>
+                            <line x1="11" y1="20" x2="53" y2="44"/>
+                            <line x1="53" y1="20" x2="11" y2="44"/>
+                            <polyline points="25,15 32,21 39,15" fill="none"/>
+                            <polyline points="25,49 32,43 39,49" fill="none"/>
+                            <polyline points="14,28 22,26 20,18" fill="none"/>
+                            <polyline points="50,36 42,38 44,46" fill="none"/>
+                            <polyline points="44,18 42,26 50,28" fill="none"/>
+                            <polyline points="20,46 22,38 14,36" fill="none"/>
+                        </g>
+                        <circle cx="32" cy="32" r="5.5" fill="url(#logoGold)" stroke="#0f172a" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="leading-tight">
+                    <div class="text-sm sm:text-lg font-black tracking-wider uppercase text-white group-hover:text-yellow-300 transition">
+                        sneg<span class="text-yellow-400">i</span>tochka
+                    </div>
+                    <div class="text-[11px] sm:text-xs font-medium text-sky-200/90">
+                        Новогодние фигуры • Минск
+                    </div>
+                </div>
+            </a>
+
+            <!-- Справа: Только кликабельный номер телефона (с отсылкой на звонок) -->
+            <a href="tel:+375447504245" onclick="handlePhoneCall(event)" class="inline-flex items-center gap-2.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black shadow-lg hover:scale-105 active:scale-95 transition">
+                <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-950 text-yellow-300 flex items-center justify-center flex-shrink-0 shadow-inner">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.07 21 3 13.93 3 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
+                    </svg>
+                </span>
+                <span class="flex flex-col text-left leading-none">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-800 hidden sm:inline mb-0.5">Позвонить нам</span>
+                    <span class="text-xs sm:text-base font-black whitespace-nowrap">+375 (44) 750-42-45</span>
+                </span>
+            </a>
+        </div>
+        <!-- Скрытые счетчики для совместимости с JS корзины -->
+        <span id="navCartCount" class="hidden">0</span>
+        <span id="navCartTotal" class="hidden">0.00 BYN</span>
+    </nav>
+
+    <!-- ШАПКА МАГАЗИНА (ТОЧНО КАК ВЕРХ ПРАЙС-ЛИСТА) -->
+    <header class="relative z-10 max-w-6xl mx-auto px-4 pt-6 pb-6 text-center">
+        <!-- Декоративные белые снежинки вокруг заголовка -->
+        <div class="hidden sm:block absolute left-10 top-8 text-white/90 sparkle">
+            <svg class="w-14 h-14" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M32 4v56M4 32h56M12 12l40 40M52 12L12 52M32 12l-6-6M32 12l6-6M32 52l-6 6M32 52l6 6M12 32l-6-6M12 32l-6 6M52 32l6-6M52 32l6 6"/>
+            </svg>
+        </div>
+        <div class="hidden sm:block absolute right-10 top-8 text-white/90 sparkle" style="animation-delay: 1.2s;">
+            <svg class="w-14 h-14" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M32 4v56M4 32h56M12 12l40 40M52 12L12 52M32 12l-6-6M32 12l6-6M32 52l-6 6M32 52l6 6M12 32l-6-6M12 32l-6 6M52 32l6-6M52 32l6 6"/>
+            </svg>
+        </div>
+
+        <!-- Главный 3D заголовок с красным новогодним колпаком на первой букве -->
+        <div class="relative inline-block mt-2">
+            <!-- Новогодний красный колпак Деда Мороза на первой букве -->
+            <svg class="w-14 h-14 sm:w-20 sm:h-20 absolute -top-7 -left-6 sm:-top-10 sm:-left-9 z-20 drop-shadow-lg transform -rotate-12" viewBox="0 0 100 100">
+                <path d="M22,72 C22,35 55,15 88,28 C74,38 68,52 72,72 Z" fill="url(#hatGrad)"/>
+                <circle cx="89" cy="29" r="9" fill="#ffffff"/>
+                <rect x="16" y="67" width="62" height="15" rx="7.5" fill="#ffffff"/>
+                <defs>
+                    <linearGradient id="hatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ef4444"/>
+                        <stop offset="100%" stop-color="#991b1b"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <h1 class="hero-title-3d text-4xl sm:text-6xl md:text-7xl uppercase tracking-wider select-none">
+                ПРАЙС-МАГАЗИН
+            </h1>
+        </div>
+
+        <p class="hero-subtitle-script text-4xl sm:text-5xl md:text-6xl -mt-2 sm:-mt-3">
+            Новогодний декор
+        </p>
+
+        <!-- Инфо-плашка о производстве и быстрых действиях -->
+        <div class="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-sky-100">
+            <span class="bg-slate-900/80 border border-sky-400/40 px-3.5 py-1.5 rounded-full backdrop-blur">
+                ✨ Изделия из пенопласта и дерева собственного производства
+            </span>
+            <span class="bg-slate-900/80 border border-yellow-400/40 px-3.5 py-1.5 rounded-full backdrop-blur text-yellow-200 font-semibold">
+                🚚 Бесплатная доставка по Минску от 200 BYN
+            </span>
+        </div>
+    </header>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ: СЕКЦИИ КАТАЛОГА В СТИЛЕ ПРАЙС-ЛИСТА -->
+    <main class="relative z-10 max-w-6xl mx-auto px-3 sm:px-6 space-y-8 pb-16">
+
+        <!-- ========================================================= -->
+        <!-- СЕКЦИЯ 1: ГОД ОГНЕННОЙ КОЗЫ (2027)                        -->
+        <!-- ========================================================= -->
+        <section id="sec-goat" data-category="goat" class="price-card-container">
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                <!-- Левая колонка: Таблица размеров и цен как на прайсе -->
+                <div class="lg:col-span-5 p-3 sm:p-4 flex flex-col justify-between bg-white">
+                    <div>
+                        <div class="header-goat rounded-xl px-4 py-2 text-center font-black text-lg sm:text-xl shadow-sm border border-yellow-500">
+                            Год Огненной Козы (2027)
+                        </div>
+                        <p class="text-xs text-slate-600 text-center mt-1.5 mb-2">
+                            1. Выберите вариант дизайна справа &rarr; 2. Кликните размер в таблице:
+                        </p>
+
+                        <table class="price-table w-full text-center border-collapse">
+                            <thead>
+                                <tr>
+                                    <th>Размер, см</th>
+                                    <th>Толщина, см</th>
+                                    <th>BYN, руб</th>
+                                    <th>Выбор</th>
+                                </tr>
+                            </thead>
+                            <tbody id="goatPriceTable">
+                                <!-- Генерируется через JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Панель добавления выбранного варианта -->
+                    <div class="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold" id="goatSelectedLabel">Дизайн: На красном фоне • 30 см</div>
+                            <div class="text-xl font-black text-slate-900" id="goatSelectedPrice">9.00 BYN</div>
+                        </div>
+                        <button onclick="addSelectedGoatToCart()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-sm shadow-md active:scale-95 transition flex items-center gap-1.5">
+                            <span>+ В корзину</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: 3 фото-карточки вариантов дизайна Козы 2027 -->
+                <div class="lg:col-span-7 p-3 sm:p-4 bg-slate-100/90 border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col justify-center">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- Вариант 1: На красном фоне -->
+                        <div onclick="selectGoatDesign(0)" id="goat-design-0" class="item-tile active-tile showcase-red-bg p-3 flex flex-col items-center justify-between text-center">
+                            <span class="self-start text-[11px] font-extrabold bg-white/90 text-red-800 px-2 py-0.5 rounded-full">Вариант 1</span>
+                            <div class="w-full py-2">
+                                <!-- SVG силуэт Козы над 2027 -->
+                                <svg viewBox="0 0 220 175" class="w-full h-36 drop-shadow-lg">
+                                    <!-- Рога и силуэт козы -->
+                                    <path d="M95,12 C118,5 142,14 150,30 C136,24 120,22 108,26 C115,32 126,35 135,34 C122,42 108,42 100,36 L105,48 C122,50 142,58 148,74 L144,105 L134,105 L135,82 L116,80 L112,105 L102,105 L105,78 L76,80 L68,105 L57,105 L66,76 L52,105 L41,105 L56,66 C60,52 75,46 88,45 L82,30 L70,28 L80,21 C82,15 88,13 95,12 Z" fill="#ffffff"/>
+                                    <!-- Стилизованные грива/волны -->
+                                    <path d="M92,48 Q115,48 128,58 M88,56 Q112,56 124,66" stroke="#991b1b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                    <!-- Цифры 2027 -->
+                                    <text x="110" y="158" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="62" fill="#ffffff" letter-spacing="-2">2027</text>
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold text-white bg-black/40 px-2.5 py-1 rounded-lg w-full">Классика (белый силуэт)</span>
+                        </div>
+
+                        <!-- Вариант 2: Белая с объемной тенью -->
+                        <div onclick="selectGoatDesign(1)" id="goat-design-1" class="item-tile showcase-dark-bg p-3 flex flex-col items-center justify-between text-center">
+                            <span class="self-start text-[11px] font-extrabold bg-white/90 text-slate-900 px-2 py-0.5 rounded-full">Вариант 2</span>
+                            <div class="w-full py-2">
+                                <svg viewBox="0 0 220 175" class="w-full h-36">
+                                    <!-- Тень -->
+                                    <g transform="translate(5,5)" opacity="0.55">
+                                        <path d="M95,12 C118,5 142,14 150,30 C136,24 120,22 108,26 C115,32 126,35 135,34 C122,42 108,42 100,36 L105,48 C122,50 142,58 148,74 L144,105 L134,105 L135,82 L116,80 L112,105 L102,105 L105,78 L76,80 L68,105 L57,105 L66,76 L52,105 L41,105 L56,66 C60,52 75,46 88,45 L82,30 L70,28 L80,21 C82,15 88,13 95,12 Z" fill="#000000"/>
+                                        <text x="110" y="158" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="62" fill="#000000" letter-spacing="-2">2027</text>
+                                    </g>
+                                    <!-- Основной контур -->
+                                    <path d="M95,12 C118,5 142,14 150,30 C136,24 120,22 108,26 C115,32 126,35 135,34 C122,42 108,42 100,36 L105,48 C122,50 142,58 148,74 L144,105 L134,105 L135,82 L116,80 L112,105 L102,105 L105,78 L76,80 L68,105 L57,105 L66,76 L52,105 L41,105 L56,66 C60,52 75,46 88,45 L82,30 L70,28 L80,21 C82,15 88,13 95,12 Z" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/>
+                                    <path d="M92,48 Q115,48 128,58 M88,56 Q112,56 124,66" stroke="#334155" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                    <text x="110" y="158" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="62" fill="#f8fafc" stroke="#334155" stroke-width="1.5" letter-spacing="-2">2027</text>
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold text-white bg-black/40 px-2.5 py-1 rounded-lg w-full">Белая с графитовой тенью</span>
+                        </div>
+
+                        <!-- Вариант 3: Серебристый перламутр -->
+                        <div onclick="selectGoatDesign(2)" id="goat-design-2" class="item-tile showcase-wood-bg p-3 flex flex-col items-center justify-between text-center">
+                            <span class="self-start text-[11px] font-extrabold bg-white/90 text-amber-900 px-2 py-0.5 rounded-full">Вариант 3</span>
+                            <div class="w-full py-2">
+                                <svg viewBox="0 0 220 175" class="w-full h-36 drop-shadow-md">
+                                    <defs>
+                                        <linearGradient id="silverGoat" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#ffffff"/>
+                                            <stop offset="50%" stop-color="#cbd5e1"/>
+                                            <stop offset="100%" stop-color="#f1f5f9"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M95,12 C118,5 142,14 150,30 C136,24 120,22 108,26 C115,32 126,35 135,34 C122,42 108,42 100,36 L105,48 C122,50 142,58 148,74 L144,105 L134,105 L135,82 L116,80 L112,105 L102,105 L105,78 L76,80 L68,105 L57,105 L66,76 L52,105 L41,105 L56,66 C60,52 75,46 88,45 L82,30 L70,28 L80,21 C82,15 88,13 95,12 Z" fill="url(#silverGoat)"/>
+                                    <path d="M92,48 Q115,48 128,58 M88,56 Q112,56 124,66" stroke="#6b3b1e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                    <text x="110" y="158" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="62" fill="url(#silverGoat)" letter-spacing="-2">2027</text>
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold text-white bg-black/40 px-2.5 py-1 rounded-lg w-full">Серебристый перламутр</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- СЕКЦИЯ 2: СНЕЖИНКИ (УЗОРЫ №1 - №6)                        -->
+        <!-- ========================================================= -->
+        <section id="sec-snowflakes" data-category="snowflakes" class="price-card-container">
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                <!-- Левая колонка: Таблица размеров снежинок -->
+                <div class="lg:col-span-5 p-3 sm:p-4 flex flex-col justify-between bg-white">
+                    <div>
+                        <div class="header-snowflakes rounded-xl px-4 py-2 text-center font-black text-lg sm:text-xl shadow-sm border border-sky-500">
+                            Снежинки (Узоры №1 – №6)
+                        </div>
+                        <p class="text-xs text-slate-600 text-center mt-1.5 mb-2">
+                            1. Нажмите на узор снежинки (1–6) справа &rarr; 2. Выберите размер:
+                        </p>
+
+                        <div class="max-h-[340px] overflow-y-auto border border-slate-300 rounded-lg">
+                            <table class="price-table w-full text-center border-collapse">
+                                <thead class="sticky top-0 z-10">
+                                    <tr>
+                                        <th>Размер, см</th>
+                                        <th>Толщина, см</th>
+                                        <th>BYN, руб</th>
+                                        <th>Выбор</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="snowflakesPriceTable">
+                                    <!-- Генерируется через JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Панель добавления снежинки -->
+                    <div class="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold" id="snowflakeSelectedLabel">Снежинка №1 • 30 см (толщ. 2 см)</div>
+                            <div class="text-xl font-black text-sky-900" id="snowflakeSelectedPrice">3.00 BYN</div>
+                        </div>
+                        <button onclick="addSelectedSnowflakeToCart()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-blue-600 hover:from-sky-300 hover:to-blue-500 text-white font-black text-sm shadow-md active:scale-95 transition flex items-center gap-1.5">
+                            <span>+ В корзину</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: Сетка 6 снежинок с номерами в синих кружках -->
+                <div class="lg:col-span-7 p-3 sm:p-4 bg-slate-100/90 border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col justify-center">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="snowflakesGrid">
+                        <!-- Генерируется через JS с уникальными SVG для каждой из 6 снежинок -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- СЕКЦИЯ 3: ЁЛКИ, СНЕГОВИКИ, ОЛЕНИ, ФИГУРЫ                  -->
+        <!-- ========================================================= -->
+        <section id="sec-figures" data-category="figures" class="price-card-container">
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                <!-- Левая колонка: Таблица размеров фигур -->
+                <div class="lg:col-span-5 p-3 sm:p-4 flex flex-col justify-between bg-white">
+                    <div>
+                        <div class="header-figures rounded-xl px-3 py-2 text-center font-black text-base sm:text-lg shadow-sm border border-red-800">
+                            Ёлки, Снеговики, Олени, Фигуры
+                        </div>
+                        <p class="text-xs text-slate-600 text-center mt-1.5 mb-2">
+                            1. Выберите фигуру справа &rarr; 2. Кликните нужную высоту:
+                        </p>
+
+                        <div class="max-h-[320px] overflow-y-auto border border-slate-300 rounded-lg">
+                            <table class="price-table w-full text-center border-collapse">
+                                <thead class="sticky top-0 z-10">
+                                    <tr>
+                                        <th>Размер, см</th>
+                                        <th>Толщина, см</th>
+                                        <th>BYN, руб</th>
+                                        <th>Выбор</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="figuresPriceTable">
+                                    <!-- Генерируется через JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Панель добавления фигуры -->
+                    <div class="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold" id="figureSelectedLabel">Снеговик • 50 см (толщ. 3 см)</div>
+                            <div class="text-xl font-black text-red-700" id="figureSelectedPrice">12.00 BYN</div>
+                        </div>
+                        <button onclick="addSelectedFigureToCart()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-sm shadow-md active:scale-95 transition flex items-center gap-1.5">
+                            <span>+ В корзину</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: 6 фигур (Снеговик, Ажурная ёлка, Олень бегущий, Узорная ёлка, Олень стоящий, Полумесяц) -->
+                <div class="lg:col-span-7 p-3 sm:p-4 bg-slate-100/90 border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col justify-center">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="figuresGrid">
+                        <!-- Генерируется через JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- СЕКЦИЯ 4 И 5: НОВОГОДНИЕ КАМИНЫ И НОВОГОДНИЕ САНИ         -->
+        <!-- ========================================================= -->
+        <section id="sec-large" data-category="large" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- КАРТОЧКА: НОВОГОДНИЕ КАМИНЫ -->
+            <div class="price-card-container p-3 sm:p-4 flex flex-col justify-between">
+                <div>
+                    <div class="header-fireplaces rounded-xl px-4 py-2 text-center font-black text-lg sm:text-xl shadow-sm border border-orange-500">
+                        Новогодние камины
+                    </div>
+
+                    <table class="price-table w-full text-center border-collapse mt-3">
+                        <thead>
+                            <tr>
+                                <th>Длина, см</th>
+                                <th>Высота, см</th>
+                                <th>Ширина, см</th>
+                                <th>BYN, руб</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-orange-50">
+                                <td class="text-base font-black">98</td>
+                                <td class="text-base font-black">98</td>
+                                <td class="text-base font-black">19</td>
+                                <td class="text-lg font-black text-orange-700">145.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Иллюстрация камина с подсветкой -->
+                    <div class="mt-3 showcase-wood-bg p-3 flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-40 h-36 flex-shrink-0">
+                            <svg viewBox="0 0 180 165" class="w-full h-full drop-shadow-xl">
+                                <!-- Верхняя полка камина -->
+                                <rect x="12" y="14" width="156" height="14" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                                <rect x="20" y="28" width="140" height="8" fill="#e2e8f0"/>
+                                <!-- Левая и правая колонны -->
+                                <rect x="22" y="36" width="32" height="106" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+                                <rect x="27" y="44" width="22" height="90" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                                <rect x="126" y="36" width="32" height="106" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+                                <rect x="131" y="44" width="22" height="90" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                                <!-- Перемычка -->
+                                <rect x="54" y="36" width="72" height="22" fill="#f8fafc"/>
+                                <!-- Топка с теплым свечением и огнем -->
+                                <rect x="54" y="58" width="72" height="84" fill="url(#fireGlow)"/>
+                                <!-- Дрова и языки пламени -->
+                                <path d="M72,134 L108,126 M72,126 L108,134" stroke="#451a03" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M90,82 C102,98 106,115 90,126 C74,115 78,98 90,82 Z" fill="#f97316"/>
+                                <path d="M90,94 C97,104 99,116 90,124 C81,116 83,104 90,94 Z" fill="#fde047"/>
+                                <!-- Основание -->
+                                <rect x="12" y="142" width="156" height="14" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                                <defs>
+                                    <radialGradient id="fireGlow" cx="50%" cy="75%" r="65%">
+                                        <stop offset="0%" stop-color="#fef08a"/>
+                                        <stop offset="45%" stop-color="#ea580c"/>
+                                        <stop offset="100%" stop-color="#431407"/>
+                                    </radialGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="text-white text-xs sm:text-sm space-y-1.5">
+                            <div class="font-extrabold text-yellow-300 text-base">Декоративный портал камина</div>
+                            <p class="text-amber-100 leading-snug">
+                                Идеален для новогодних фотосессий, оформления гостиной, витрин магазинов и детских утренников. Легкий, прочный, с рельефной лепниной.
+                            </p>
+                            <div class="inline-block bg-black/40 px-2.5 py-1 rounded text-[11px] text-amber-200">
+                                Габариты: 98 × 98 × 19 см
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-500 block">Цена за 1 камин:</span>
+                        <span class="text-2xl font-black text-slate-900">145.00 BYN</span>
+                    </div>
+                    <button onclick="addDirectItem('Новогодний камин (98×98×19 см)', 145.0, 'Камины')" class="px-5 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-white font-black text-sm shadow-md active:scale-95 transition">
+                        + Добавить в корзину
+                    </button>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА: НОВОГОДНИЕ САНИ -->
+            <div class="price-card-container p-3 sm:p-4 flex flex-col justify-between">
+                <div>
+                    <div class="header-sleigh rounded-xl px-4 py-2 text-center font-black text-lg sm:text-xl shadow-sm border border-blue-500">
+                        Новогодние Сани
+                    </div>
+
+                    <table class="price-table w-full text-center border-collapse mt-3">
+                        <thead>
+                            <tr>
+                                <th>Длина, мм (см)</th>
+                                <th>Высота, мм</th>
+                                <th>Ширина, см</th>
+                                <th>BYN, руб</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-blue-50">
+                                <td class="text-base font-black">1200 (120 см)</td>
+                                <td class="text-base font-black">640</td>
+                                <td class="text-base font-black">50</td>
+                                <td class="text-lg font-black text-blue-700">200.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Иллюстрация резных саней со звездами -->
+                    <div class="mt-3 showcase-dark-bg p-3 flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-40 h-36 flex-shrink-0">
+                            <svg viewBox="0 0 210 155" class="w-full h-full drop-shadow-xl">
+                                <!-- Полозья саней -->
+                                <path d="M18,125 C8,125 6,110 18,108 C25,107 26,116 20,118 L175,118 C192,118 198,96 184,88 C176,84 168,92 174,98" fill="none" stroke="#f8fafc" stroke-width="5" stroke-linecap="round"/>
+                                <!-- Стойки полозьев -->
+                                <line x1="55" y1="118" x2="55" y2="96" stroke="#e2e8f0" stroke-width="4"/>
+                                <line x1="145" y1="118" x2="145" y2="96" stroke="#e2e8f0" stroke-width="4"/>
+                                <!-- Корпус саней с завитками -->
+                                <path d="M32,42 C48,42 54,68 78,72 L135,72 C152,72 162,54 176,56 C184,58 182,74 168,84 C156,94 142,98 122,98 L54,98 C34,98 22,82 22,60 C22,48 26,42 32,42 Z" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+                                <!-- Вырезные звезды на борту саней как на фото -->
+                                <polygon points="75,78 78,84 85,84 80,88 82,94 75,90 68,94 70,88 65,84 72,84" fill="#1e3a8a"/>
+                                <polygon points="118,78 121,84 128,84 123,88 125,94 118,90 111,94 113,88 108,84 115,84" fill="#1e3a8a"/>
+                                <polygon points="44,62 46,67 51,67 47,70 49,75 44,72 39,75 41,70 37,67 42,67" fill="#1e3a8a"/>
+                            </svg>
+                        </div>
+                        <div class="text-white text-xs sm:text-sm space-y-1.5">
+                            <div class="font-extrabold text-sky-300 text-base">Большие сани Деда Мороза</div>
+                            <p class="text-sky-100 leading-snug">
+                                Эффектные объемные сани с резными звездами для фотозон, торговых центров, уличных и интерьерных инсталляций. Вмещают подарки и детей для фото!
+                            </p>
+                            <div class="inline-block bg-black/40 px-2.5 py-1 rounded text-[11px] text-sky-200">
+                                Габариты: 1200 × 640 × 500 мм • Бесплатная доставка по Минску!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-500 block">Цена за 1 сани:</span>
+                        <span class="text-2xl font-black text-slate-900">200.00 BYN</span>
+                    </div>
+                    <button onclick="addDirectItem('Новогодние Сани (1200×640×500 мм)', 200.0, 'Сани')" class="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-black text-sm shadow-md active:scale-95 transition">
+                        + Добавить в корзину
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ФУТЕР С КОНТАКТАМИ И УСЛОВИЯМИ ДОСТАВКИ ТОЧНО КАК ВНИЗУ ПРАЙС-ЛИСТА -->
+    <footer class="relative z-10 snow-ground pt-14 pb-10 px-4">
+        <div class="max-w-5xl mx-auto bg-slate-950/90 backdrop-blur-md border-2 border-white/80 rounded-2xl p-5 sm:p-7 text-white shadow-2xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm sm:text-base">
+                <div class="space-y-2.5">
+                    <p>
+                        <span class="font-extrabold text-yellow-300 underline decoration-yellow-400/60">Форма оплаты:</span>
+                        наличный и безналичный расчет. Цены указаны без НДС, (НДС 0%).
+                    </p>
+                    <p>
+                        <span class="font-extrabold text-yellow-300 underline decoration-yellow-400/60">Самовывоз:</span>
+                        агрогородок Ждановичи, переулок Горный, 1г.
+                    </p>
+                    <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <span class="font-extrabold text-yellow-300 underline decoration-yellow-400/60">Тел. моб:</span>
+                        <a href="tel:+375447504245" class="font-bold text-white hover:text-yellow-300 transition">+375 (44) 750-42-45</a>
+                        <span class="text-slate-400">|</span>
+                        <a href="tel:+375296181353" class="font-bold text-white hover:text-yellow-300 transition">+375 (29) 618-13-53</a>
+                    </p>
+                </div>
+
+                <div class="space-y-2.5">
+                    <p>
+                        <span class="font-extrabold text-sky-300 underline decoration-sky-400/60">Доставка по РБ:</span>
+                        (почта, Европочта) от суммы заказа от <strong>50 руб</strong> и за счет Покупателя.
+                    </p>
+                    <p>
+                        <span class="font-extrabold text-sky-300 underline decoration-sky-400/60">Доставка по городу Минску:</span>
+                        сумма заказа от <strong>200 руб — бесплатно</strong>, менее 200 руб — <strong>15 руб</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Желтая плашка об оптовой скидке как в самом низу прайса -->
+            <div class="mt-6 text-center">
+                <div class="inline-block bg-yellow-300 text-slate-950 font-black text-xs sm:text-sm md:text-base px-5 py-2 rounded-lg shadow-lg border border-yellow-500">
+                    * при большом заказе, будет применена оптовая скидка от этих цен.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ПЛАВАЮЩАЯ КНОПКА КОРЗИНЫ СНИЗУ СПРАВА -->
+    <button onclick="toggleCart(true)" id="floatingCartBtn" class="fixed bottom-5 right-5 z-40 flex items-center gap-3 px-5 py-3.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-black shadow-2xl border-2 border-yellow-300 hover:scale-105 active:scale-95 transition">
+        <span class="text-xl">🛒</span>
+        <div class="text-left leading-tight">
+            <div class="text-xs text-yellow-200">Ваш заказ (<span id="floatCount">0</span>)</div>
+            <div class="text-sm sm:text-base font-black" id="floatTotal">0.00 BYN</div>
+        </div>
+    </button>
+
+    <!-- ========================================================= -->
+    <!-- ВЫДВИЖНАЯ КОРЗИНА И ОФОРМЛЕНИЕ ЗАКАЗА                      -->
+    <!-- ========================================================= -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
+        <!-- Затемнение фона -->
+        <div onclick="toggleCart(false)" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm"></div>
+
+        <!-- Панель корзины -->
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-lg bg-white shadow-2xl flex flex-col justify-between overflow-hidden">
+            <!-- Шапка корзины -->
+            <div class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white px-5 py-4 flex items-center justify-between border-b-2 border-yellow-400">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-black flex items-center gap-2">
+                        <span>🎄 Корзина заказов</span>
+                    </h2>
+                    <p class="text-xs text-sky-300">Цены указаны в BYN без НДС (НДС 0%)</p>
+                </div>
+                <button onclick="toggleCart(false)" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white text-xl font-bold">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Содержимое корзины и форма -->
+            <div class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-5">
+                <!-- Список товаров -->
+                <div id="cartItemsList" class="space-y-2.5">
+                    <!-- Заполняется через JS -->
+                </div>
+
+                <!-- Плашка оптовой скидки при сумме >= 300 BYN -->
+                <div id="wholesaleBanner" class="hidden bg-yellow-100 border-2 border-yellow-400 rounded-xl p-3 text-xs sm:text-sm text-slate-900 font-bold">
+                    🎉 Отличный объем! На ваш заказ распространяется <span class="underline">индивидуальная оптовая скидка</span> — менеджер пересчитает итоговую стоимость при подтверждении.
+                </div>
+
+                <!-- Выбор способа доставки -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2.5">
+                    <div class="font-extrabold text-sm text-slate-900">Способ получения заказа:</div>
+                    
+                    <label class="flex items-start gap-2.5 p-2 rounded-lg border border-slate-200 bg-white cursor-pointer hover:border-sky-400">
+                        <input type="radio" name="deliveryType" value="pickup" checked onchange="renderCart()" class="mt-1 accent-sky-600">
+                        <div class="text-xs sm:text-sm">
+                            <div class="font-bold text-slate-900">Самовывоз — Бесплатно</div>
+                            <div class="text-slate-500">аг. Ждановичи, пер. Торный, 1Г</div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-2.5 p-2 rounded-lg border border-slate-200 bg-white cursor-pointer hover:border-sky-400">
+                        <input type="radio" name="deliveryType" value="minsk" onchange="renderCart()" class="mt-1 accent-sky-600">
+                        <div class="text-xs sm:text-sm">
+                            <div class="font-bold text-slate-900">Доставка по г. Минску</div>
+                            <div class="text-slate-500">От 200 BYN — <b>Бесплатно</b>, до 200 BYN — <b>15.00 BYN</b></div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-2.5 p-2 rounded-lg border border-slate-200 bg-white cursor-pointer hover:border-sky-400">
+                        <input type="radio" name="deliveryType" value="rb" onchange="renderCart()" class="mt-1 accent-sky-600">
+                        <div class="text-xs sm:text-sm">
+                            <div class="font-bold text-slate-900">Доставка по РБ (Почта / Европочта)</div>
+                            <div class="text-slate-500">При заказе от <b>50 BYN</b> (оплата пересылки за счет Покупателя)</div>
+                        </div>
+                    </label>
+
+                    <div id="rbMinWarning" class="hidden text-xs font-bold text-red-600 bg-red-50 border border-red-200 rounded-lg p-2">
+                        ⚠️ Доставка по РБ осуществляется при сумме заказа от 50.00 BYN. Добавьте товаров еще на <span id="rbRemaining">0</span> BYN или выберите самовывоз.
+                    </div>
+                </div>
+
+                <!-- Форма контактов покупателя -->
+                <form id="checkoutForm" onsubmit="submitOrder(event)" class="space-y-3">
+                    <div class="font-extrabold text-sm text-slate-900">Данные для оформления:</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <input type="text" id="custName" required placeholder="Ваше имя *" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500">
+                        <input type="tel" id="custPhone" required placeholder="+375 (__) ___-__-__ *" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <select id="paymentMethod" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:border-sky-500">
+                            <option value="Наличный расчет">Оплата: Наличный расчет</option>
+                            <option value="Безналичный расчет (без НДС 0%)">Оплата: Безналичный расчет (НДС 0%)</option>
+                        </select>
+                        <input type="text" id="custAddress" placeholder="Адрес доставки / отделение Европочты" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500">
+                    </div>
+                    <textarea id="custComment" rows="2" placeholder="Комментарий к заказу (пожелания по срокам, покраске и т.д.)" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500"></textarea>
+
+                    <!-- Итоговый блок -->
+                    <div class="bg-slate-900 text-white rounded-xl p-3.5 space-y-1.5">
+                        <div class="flex justify-between text-xs text-slate-300">
+                            <span>Сумма товаров:</span>
+                            <span id="summaryGoods">0.00 BYN</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-300">
+                            <span>Доставка:</span>
+                            <span id="summaryDelivery">0.00 BYN (Самовывоз)</span>
+                        </div>
+                        <div class="flex justify-between text-lg font-black text-yellow-300 pt-1.5 border-t border-slate-700">
+                            <span>Итого к оплате:</span>
+                            <span id="summaryTotal">0.00 BYN</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitOrderBtn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white font-black text-base shadow-lg active:scale-98 transition">
+                        Оформить заказ
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- МОДАЛЬНОЕ ОКНО: ИНДИВИДУАЛЬНЫЙ ЗАКАЗ ПО ЭСКИЗУ            -->
+    <!-- ========================================================= -->
+    <div id="customOrderModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeCustomModal()" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
+        <div class="relative bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border-2 border-yellow-400">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-black text-slate-900">✏️ Заказ по вашему эскизу</h3>
+                <button onclick="closeCustomModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 mb-4">
+                Изготовим любую новогоднюю фигуру, логотип, надпись или фотозону из пенопласта или дерева по вашим размерам и эскизу!
+            </p>
+            <form onsubmit="submitCustomRequest(event)" class="space-y-3">
+                <input type="text" required placeholder="Ваше имя *" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg">
+                <input type="tel" required placeholder="Телефон (+375...) *" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg">
+                <textarea required rows="3" placeholder="Опишите изделие: что нужно вырезать, желаемая высота/толщина (см), количество..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg"></textarea>
+                <div class="text-xs text-slate-500">
+                    Также можно отправить картинку/чертеж напрямую в Viber/Telegram: <br>
+                    <strong class="text-slate-800">+375 (44) 750-42-45 (Михаил)</strong> или <strong class="text-slate-800">+375 (29) 618-13-53 (Николай)</strong>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 font-black text-sm shadow-md">
+                    Отправить заявку на расчет
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ (TOAST) -->
+    <div id="toastNotification" class="fixed top-16 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 text-white border-2 border-yellow-400 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 text-sm font-bold">
+            <span class="text-lg">✅</span>
+            <span id="toastText">Товар добавлен в корзину</span>
+        </div>
+    </div>
+
+    <script>
+        /* =============================================================
+           1. ДАННЫЕ ПРАЙС-ЛИСТА (ТОЧНЫЕ РАЗМЕРЫ, ТОЛЩИНЫ И ЦЕНЫ В BYN)
+           ============================================================= */
+
+        const GOAT_DESIGNS = [
+            { id: 0, name: 'Коза 2027 (белый силуэт)' },
+            { id: 1, name: 'Коза 2027 (белая с графитовой тенью)' },
+            { id: 2, name: 'Коза 2027 (серебристый перламутр)' }
+        ];
+
+        const GOAT_PRICES = [
+            { size: '30 см', thick: '3 см', price: 9.0 },
+            { size: '40 см', thick: '3 см', price: 12.0 },
+            { size: '50 см', thick: '3 см', price: 16.0 },
+            { size: '60 см', thick: '4 см', price: 25.0 },
+            { size: '70 см', thick: '5 см', price: 40.0 },
+            { size: '80 см', thick: '5 см', price: 48.0 },
+            { size: '90 см', thick: '5 см', price: 59.0 }
+        ];
+
+        const SNOWFLAKES_DESIGNS = [
+            { num: 1, name: 'Снежинка №1 (Классическая лучевая)' },
+            { num: 2, name: 'Снежинка №2 (Кристальная)' },
+            { num: 3, name: 'Снежинка №3 (Ажурная с ромбами)' },
+            { num: 4, name: 'Снежинка №4 (Резная звездная)' },
+            { num: 5, name: 'Снежинка №5 (Пушистая игольчатая)' },
+            { num: 6, name: 'Снежинка №6 (Морозный узор)' }
+        ];
+
+        const SNOWFLAKES_PRICES = [
+            { size: '15 см', thick: '0.8 см', price: 0.95 },
+            { size: '20 см', thick: '1 см', price: 1.5 },
+            { size: '30 см', thick: '2 см', price: 3.0 },
+            { size: '40 см', thick: '2 см', price: 4.0 },
+            { size: '40 см', thick: '3 см', price: 6.0 },
+            { size: '50 см', thick: '2 см', price: 6.0 },
+            { size: '50 см', thick: '3 см', price: 9.0 },
+            { size: '70 см', thick: '4 см', price: 15.0 },
+            { size: '70 см', thick: '5 см', price: 25.0 },
+            { size: '80 см', thick: '5 см', price: 30.0 },
+            { size: '90 см', thick: '5 см', price: 35.0 },
+            { size: '100 см', thick: '5 см', price: 45.0 }
+        ];
+
+        const FIGURES_LIST = [
+            { id: 'snowman', name: 'Снеговик в шляпе' },
+            { id: 'tree_lace', name: 'Ажурная ёлка со звездой' },
+            { id: 'deer_run', name: 'Олень бегущий' },
+            { id: 'tree_ornament', name: 'Узорная ёлка с завитками' },
+            { id: 'deer_stand', name: 'Олень стоящий грациозный' },
+            { id: 'moon', name: 'Полумесяц новогодний' }
+        ];
+
+        const FIGURES_PRICES = [
+            { size: '50 см', thick: '3 см', price: 12.0 },
+            { size: '60 см', thick: '4 см', price: 20.0 },
+            { size: '70 см', thick: '5 см', price: 30.0 },
+            { size: '80 см', thick: '5 см', price: 40.0 },
+            { size: '90 см', thick: '5 см', price: 52.0 },
+            { size: '100 см', thick: '5 см', price: 60.0 },
+            { size: '110 см', thick: '7 см', price: 80.0 },
+            { size: '120 см', thick: '7 см', price: 100.0 },
+            { size: '130 см', thick: '7 см', price: 115.0 },
+            { size: '140 см', thick: '7 см', price: 130.0 }
+        ];
+
+        /* Состояние выбранных опций и корзины */
+        let state = {
+            selectedGoatDesign: 0,
+            selectedGoatPriceIdx: 0,
+            selectedSnowflakeNum: 1,
+            selectedSnowflakePriceIdx: 2, // 30 см по умолчанию
+            selectedFigureIdx: 0,
+            selectedFigurePriceIdx: 0, // 50 см по умолчанию
+            cart: []
+        };
+
+        /* =============================================================
+           2. SVG ГЕНЕРАТОРЫ ДЛЯ СНЕЖИНОК №1-6 И ФИГУР
+           ============================================================= */
+
+        function getSnowflakeSVG(num) {
+            // 6 разных симметричных снежинок, максимально повторяющих фото из прайса
+            const arms = [0, 60, 120, 180, 240, 300];
+            let pattern = '';
+
+            if (num === 1) {
+                // Классическая прямая с двойными шевронами
+                pattern = arms.map(a => `
+                    <g transform="rotate(${a} 50 50)">
+                        <line x1="50" y1="50" x2="50" y2="8" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round"/>
+                        <polyline points="40,22 50,14 60,22" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="37,34 50,24 63,34" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                `).join('') + `<circle cx="50" cy="50" r="5" fill="#ffffff"/>`;
+            } else if (num === 2) {
+                // Тонкая кристальная с тройными веточками
+                pattern = arms.map(a => `
+                    <g transform="rotate(${a} 50 50)">
+                        <line x1="50" y1="50" x2="50" y2="7" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
+                        <polyline points="42,18 50,11 58,18" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+                        <polyline points="39,28 50,19 61,28" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+                        <polyline points="36,38 50,28 64,38" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+                    </g>
+                `).join('');
+            } else if (num === 3) {
+                // Снежинка с ромбовидным центром и копьями
+                pattern = arms.map(a => `
+                    <g transform="rotate(${a} 50 50)">
+                        <line x1="50" y1="50" x2="50" y2="8" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round"/>
+                        <polygon points="50,10 55,18 50,25 45,18" fill="#ffffff"/>
+                        <polyline points="38,33 50,25 62,33" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
+                    </g>
+                `).join('') + `<polygon points="50,38 60,44 60,56 50,62 40,56 40,44" fill="none" stroke="#ffffff" stroke-width="3.5"/>`;
+            } else if (num === 4) {
+                // Округлые лепестковые разветвления
+                pattern = arms.map(a => `
+                    <g transform="rotate(${a} 50 50)">
+                        <line x1="50" y1="50" x2="50" y2="9" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+                        <path d="M50,25 Q38,22 36,14 M50,25 Q62,22 64,14" fill="none" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round"/>
+                        <path d="M50,36 Q38,34 35,27 M50,36 Q62,34 65,27" fill="none" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round"/>
+                    </g>
+                `).join('') + `<circle cx="50" cy="50" r="7" fill="#ffffff"/>`;
+            } else if (num === 5) {
+                // Густая игольчатая с перпендикулярными лучиками
+                pattern = arms.map(a => `
+                    <g transform="rotate(${a} 50 50)">
+                        <line x1="50" y1="50" x2="50" y2="7" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round"/>
+                        <line x1="42" y1="16" x2="58" y2="16" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                        <line x1="39" y1="25" x2="61" y2="25" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                        <line x1="36" y1="34" x2="64" y2="34" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+                `).join('');
+            } else {
+                // №6: Сложный морозный кристалл с внутренним шестиугольником
+                pattern = arms.map(a => `
+                    <g transform="rotate(${a} 50 50)">
+                        <line x1="50" y1="50" x2="50" y2="7" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+                        <polyline points="41,19 50,11 59,19" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="50" cy="24" r="3.5" fill="#ffffff"/>
+                        <polyline points="37,35 50,27 63,35" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
+                    </g>
+                `).join('') + `<circle cx="50" cy="50" r="9" fill="none" stroke="#ffffff" stroke-width="3"/>`;
+            }
+
+            return `<svg viewBox="0 0 100 100" class="w-full h-24 drop-shadow-md">${pattern}</svg>`;
+        }
+
+        function getFigureSVG(id) {
+            if (id === 'snowman') {
+                return `
+                <svg viewBox="0 0 120 130" class="w-full h-28 drop-shadow-md">
+                    <!-- Шляпа-цилиндр -->
+                    <rect x="44" y="8" width="32" height="16" rx="2" fill="#ffffff"/>
+                    <rect x="36" y="22" width="48" height="5" rx="2.5" fill="#ffffff"/>
+                    <!-- Голова и тело -->
+                    <circle cx="60" cy="40" r="15" fill="#ffffff"/>
+                    <circle cx="60" cy="70" r="22" fill="#ffffff"/>
+                    <circle cx="60" cy="105" r="25" fill="#ffffff"/>
+                    <!-- Глаза, нос-морковка, пуговицы -->
+                    <circle cx="55" cy="37" r="2" fill="#7f1d1d"/>
+                    <circle cx="65" cy="37" r="2" fill="#7f1d1d"/>
+                    <polygon points="60,40 73,43 60,45" fill="#f97316"/>
+                    <circle cx="60" cy="64" r="2.5" fill="#7f1d1d"/>
+                    <circle cx="60" cy="74" r="2.5" fill="#7f1d1d"/>
+                    <circle cx="60" cy="98" r="2.5" fill="#7f1d1d"/>
+                    <!-- Руки-веточки -->
+                    <path d="M39,65 L18,52 M24,56 L19,46 M81,65 L102,52 M96,56 L101,46" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+                </svg>`;
+            } else if (id === 'tree_lace') {
+                return `
+                <svg viewBox="0 0 120 130" class="w-full h-28 drop-shadow-md">
+                    <!-- Звезда -->
+                    <polygon points="60,6 63,14 71,14 65,19 67,27 60,22 53,27 55,19 49,14 57,14" fill="#ffffff"/>
+                    <!-- Контур ёлки -->
+                    <polygon points="60,24 22,112 98,112" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linejoin="round"/>
+                    <!-- Ажурные завитки внутри -->
+                    <path d="M60,38 C48,46 72,54 45,66 C68,74 36,86 78,96 M42,96 C55,86 68,104 82,92" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
+                    <circle cx="52" cy="54" r="3" fill="#ffffff"/>
+                    <circle cx="68" cy="74" r="3.5" fill="#ffffff"/>
+                    <circle cx="46" cy="92" r="3.5" fill="#ffffff"/>
+                    <!-- Ствол -->
+                    <rect x="52" y="112" width="16" height="12" rx="2" fill="#ffffff"/>
+                </svg>`;
+            } else if (id === 'deer_run') {
+                return `
+                <svg viewBox="0 0 130 130" class="w-full h-28 drop-shadow-md">
+                    <!-- Ветвистые рога -->
+                    <path d="M84,36 L94,14 M89,24 L82,18 M92,20 L100,16 M78,36 L82,16" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Голова и шея -->
+                    <path d="M76,36 L98,40 L94,48 L78,48 L72,68 L36,70 L24,62 L32,76 L20,104 L28,106 L42,82 L68,82 L88,108 L95,103 L76,76 L82,52 Z" fill="#ffffff"/>
+                    <!-- Передняя поднятая нога в прыжке -->
+                    <path d="M76,74 L104,68 L112,84 L105,86 L98,74 L74,78 Z" fill="#ffffff"/>
+                </svg>`;
+            } else if (id === 'tree_ornament') {
+                return `
+                <svg viewBox="0 0 120 130" class="w-full h-28 drop-shadow-md">
+                    <!-- Резная узорная ёлка (силуэт с внутренними вырезами) -->
+                    <path d="M60,10 L38,44 L48,44 L28,76 L40,76 L20,110 L100,110 L80,76 L92,76 L72,44 L82,44 Z" fill="#ffffff"/>
+                    <!-- Внутренние спирали как на фото -->
+                    <path d="M60,32 C50,38 70,46 50,56 C72,64 42,76 76,88 C52,96 42,102 68,102" fill="none" stroke="#991b1b" stroke-width="3.5" stroke-linecap="round"/>
+                    <rect x="52" y="110" width="16" height="13" rx="2" fill="#ffffff"/>
+                </svg>`;
+            } else if (id === 'deer_stand') {
+                return `
+                <svg viewBox="0 0 130 130" class="w-full h-28 drop-shadow-md">
+                    <!-- Пышные рога -->
+                    <path d="M88,36 C96,24 104,16 102,10 M96,22 L88,15 M99,18 L108,14 M82,36 C84,22 88,14 84,10" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Стоящий гордый олень -->
+                    <path d="M80,36 L102,41 L99,48 L84,48 L78,70 L38,70 L28,62 L32,74 L28,114 L35,114 L42,84 L48,114 L54,114 L49,82 L70,82 L74,114 L81,114 L78,82 L86,114 L93,114 L84,76 L88,52 Z" fill="#ffffff"/>
+                </svg>`;
+            } else {
+                // Полумесяц новогодний
+                return `
+                <svg viewBox="0 0 120 130" class="w-full h-28 drop-shadow-md">
+                    <path d="M82,16 C42,20 22,58 38,92 C48,112 72,120 94,112 C68,110 52,90 52,64 C52,38 66,22 82,16 Z" fill="#ffffff"/>
+                    <!-- Звездочка на лучике месяца -->
+                    <polygon points="88,44 91,51 98,51 92,55 94,62 88,58 82,62 84,55 78,51 85,51" fill="#ffffff"/>
+                </svg>`;
+            }
+        }
+
+        /* =============================================================
+           3. ИНИЦИАЛИЗАЦИЯ ТАБЛИЦ И КАРТОЧЕК
+           ============================================================= */
+
+        function initShop() {
+            renderGoatSection();
+            renderSnowflakesSection();
+            renderFiguresSection();
+            loadCartFromStorage();
+            initSnowAnimation();
+        }
+
+        /* --- Секция 1: Коза 2027 --- */
+        function renderGoatSection() {
+            const tbody = document.getElementById('goatPriceTable');
+            tbody.innerHTML = GOAT_PRICES.map((row, idx) => `
+                <tr onclick="selectGoatPrice(${idx})" class="price-row ${state.selectedGoatPriceIdx === idx ? 'selected' : ''}">
+                    <td>${row.size}</td>
+                    <td>${row.thick}</td>
+                    <td class="text-right font-black">${row.price.toFixed(1)}</td>
+                    <td>
+                        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-extrabold ${state.selectedGoatPriceIdx === idx ? 'bg-slate-900 text-yellow-300' : 'bg-yellow-200 text-slate-900'}">
+                            ${state.selectedGoatPriceIdx === idx ? '✓ Выбрано' : 'Выбрать'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+
+            const design = GOAT_DESIGNS[state.selectedGoatDesign];
+            const priceObj = GOAT_PRICES[state.selectedGoatPriceIdx];
+            document.getElementById('goatSelectedLabel').textContent = `${design.name} • ${priceObj.size} (толщ. ${priceObj.thick})`;
+            document.getElementById('goatSelectedPrice').textContent = `${priceObj.price.toFixed(2)} BYN`;
+
+            GOAT_DESIGNS.forEach((_, idx) => {
+                const el = document.getElementById(`goat-design-${idx}`);
+                if (el) {
+                    el.classList.toggle('active-tile', idx === state.selectedGoatDesign);
+                }
+            });
+        }
+
+        function selectGoatDesign(idx) {
+            state.selectedGoatDesign = idx;
+            renderGoatSection();
+        }
+
+        function selectGoatPrice(idx) {
+            state.selectedGoatPriceIdx = idx;
+            renderGoatSection();
+        }
+
+        function addSelectedGoatToCart() {
+            const design = GOAT_DESIGNS[state.selectedGoatDesign];
+            const priceObj = GOAT_PRICES[state.selectedGoatPriceIdx];
+            const title = `${design.name} — ${priceObj.size} (толщ. ${priceObj.thick})`;
+            addDirectItem(title, priceObj.price, 'Год Огненной Козы');
+        }
+
+        /* --- Секция 2: Снежинки №1-6 --- */
+        function renderSnowflakesSection() {
+            const grid = document.getElementById('snowflakesGrid');
+            grid.innerHTML = SNOWFLAKES_DESIGNS.map(item => `
+                <div onclick="selectSnowflakePattern(${item.num})" class="item-tile showcase-wood-bg p-2.5 relative flex flex-col items-center justify-between ${state.selectedSnowflakeNum === item.num ? 'active-tile' : ''}">
+                    <span class="snowflake-num-badge w-7 h-7 rounded-full flex items-center justify-center text-sm absolute top-2 right-2">
+                        ${item.num}
+                    </span>
+                    <div class="w-full pt-1">
+                        ${getSnowflakeSVG(item.num)}
+                    </div>
+                    <span class="text-[11px] font-bold text-white bg-black/45 px-2 py-0.5 rounded w-full text-center truncate">
+                        Узор №${item.num}
+                    </span>
+                </div>
+            `).join('');
+
+            const tbody = document.getElementById('snowflakesPriceTable');
+            tbody.innerHTML = SNOWFLAKES_PRICES.map((row, idx) => `
+                <tr onclick="selectSnowflakePrice(${idx})" class="price-row ${state.selectedSnowflakePriceIdx === idx ? 'selected' : ''}">
+                    <td>${row.size}</td>
+                    <td>${row.thick}</td>
+                    <td class="text-right font-black">${row.price.toFixed(2).replace(/\.00$/, '.0')}</td>
+                    <td>
+                        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-extrabold ${state.selectedSnowflakePriceIdx === idx ? 'bg-sky-950 text-sky-200' : 'bg-sky-100 text-sky-900'}">
+                            ${state.selectedSnowflakePriceIdx === idx ? '✓ Выбрано' : 'Выбрать'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+
+            const sf = SNOWFLAKES_DESIGNS.find(s => s.num === state.selectedSnowflakeNum);
+            const priceObj = SNOWFLAKES_PRICES[state.selectedSnowflakePriceIdx];
+            document.getElementById('snowflakeSelectedLabel').textContent = `Снежинка №${sf.num} • ${priceObj.size} (толщ. ${priceObj.thick})`;
+            document.getElementById('snowflakeSelectedPrice').textContent = `${priceObj.price.toFixed(2)} BYN`;
+        }
+
+        function selectSnowflakePattern(num) {
+            state.selectedSnowflakeNum = num;
+            renderSnowflakesSection();
+        }
+
+        function selectSnowflakePrice(idx) {
+            state.selectedSnowflakePriceIdx = idx;
+            renderSnowflakesSection();
+        }
+
+        function addSelectedSnowflakeToCart() {
+            const sf = SNOWFLAKES_DESIGNS.find(s => s.num === state.selectedSnowflakeNum);
+            const priceObj = SNOWFLAKES_PRICES[state.selectedSnowflakePriceIdx];
+            const title = `${sf.name} — ${priceObj.size} (толщ. ${priceObj.thick})`;
+            addDirectItem(title, priceObj.price, 'Снежинки');
+        }
+
+        /* --- Секция 3: Ёлки, Снеговики, Олени, Фигуры --- */
+        function renderFiguresSection() {
+            const grid = document.getElementById('figuresGrid');
+            grid.innerHTML = FIGURES_LIST.map((fig, idx) => {
+                // Чередуем фоны как в прайсе (бордовый и темно-серый/древесный)
+                const bgClass = (idx === 0 || idx === 3) ? 'showcase-red-bg' : 'showcase-dark-bg';
+                return `
+                    <div onclick="selectFigureItem(${idx})" class="item-tile ${bgClass} p-2.5 flex flex-col items-center justify-between ${state.selectedFigureIdx === idx ? 'active-tile' : ''}">
+                        <div class="w-full">
+                            ${getFigureSVG(fig.id)}
+                        </div>
+                        <span class="text-[11px] font-bold text-white bg-black/45 px-2 py-1 rounded w-full text-center leading-tight">
+                            ${fig.name}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+
+            const tbody = document.getElementById('figuresPriceTable');
+            tbody.innerHTML = FIGURES_PRICES.map((row, idx) => `
+                <tr onclick="selectFigurePrice(${idx})" class="price-row ${state.selectedFigurePriceIdx === idx ? 'selected' : ''}">
+                    <td>${row.size}</td>
+                    <td>${row.thick}</td>
+                    <td class="text-right font-black">${row.price.toFixed(1)}</td>
+                    <td>
+                        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-extrabold ${state.selectedFigurePriceIdx === idx ? 'bg-red-950 text-yellow-300' : 'bg-red-100 text-red-900'}">
+                            ${state.selectedFigurePriceIdx === idx ? '✓ Выбрано' : 'Выбрать'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+
+            const fig = FIGURES_LIST[state.selectedFigureIdx];
+            const priceObj = FIGURES_PRICES[state.selectedFigurePriceIdx];
+            document.getElementById('figureSelectedLabel').textContent = `${fig.name} • ${priceObj.size} (толщ. ${priceObj.thick})`;
+            document.getElementById('figureSelectedPrice').textContent = `${priceObj.price.toFixed(2)} BYN`;
+        }
+
+        function selectFigureItem(idx) {
+            state.selectedFigureIdx = idx;
+            renderFiguresSection();
+        }
+
+        function selectFigurePrice(idx) {
+            state.selectedFigurePriceIdx = idx;
+            renderFiguresSection();
+        }
+
+        function addSelectedFigureToCart() {
+            const fig = FIGURES_LIST[state.selectedFigureIdx];
+            const priceObj = FIGURES_PRICES[state.selectedFigurePriceIdx];
+            const title = `${fig.name} — ${priceObj.size} (толщ. ${priceObj.thick})`;
+            addDirectItem(title, priceObj.price, 'Фигуры');
+        }
+
+        /* =============================================================
+           4. ФИЛЬТРАЦИЯ КАТЕГОРИЙ
+           ============================================================= */
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.classList.add('bg-yellow-400', 'text-slate-950');
+                    btn.classList.remove('bg-slate-800');
+                } else {
+                    btn.classList.remove('bg-yellow-400', 'text-slate-950');
+                    btn.classList.add('bg-slate-800');
+                }
+            });
+
+            document.querySelectorAll('main > section').forEach(sec => {
+                if (cat === 'all' || sec.dataset.category === cat) {
+                    sec.classList.remove('hidden');
+                } else {
+                    sec.classList.add('hidden');
+                }
+            });
+        }
+
+        /* =============================================================
+           5. ЛОГИКА КОРЗИНЫ, ДОСТАВКИ И ОФОРМЛЕНИЯ ЗАКАЗА
+           ============================================================= */
+        function addDirectItem(title, price, category) {
+            const existing = state.cart.find(item => item.title === title);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                state.cart.push({
+                    id: Date.now() + Math.random(),
+                    title,
+                    price,
+                    category,
+                    qty: 1
+                });
+            }
+            saveCartToStorage();
+            renderCart();
+            showToast(`Добавлено: ${title}`);
+        }
+
+        function updateQty(id, delta) {
+            const idx = state.cart.findIndex(item => item.id === id);
+            if (idx === -1) return;
+            state.cart[idx].qty += delta;
+            if (state.cart[idx].qty <= 0) {
+                state.cart.splice(idx, 1);
+            }
+            saveCartToStorage();
+            renderCart();
+        }
+
+        function removeItem(id) {
+            state.cart = state.cart.filter(item => item.id !== id);
+            saveCartToStorage();
+            renderCart();
+        }
+
+        function renderCart() {
+            const totalCount = state.cart.reduce((sum, i) => sum + i.qty, 0);
+            const goodsTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+            // Обновление счетчиков в шапке и плавающей кнопке
+            document.getElementById('navCartCount').textContent = totalCount;
+            document.getElementById('navCartTotal').textContent = `${goodsTotal.toFixed(2)} BYN`;
+            document.getElementById('floatCount').textContent = totalCount;
+            document.getElementById('floatTotal').textContent = `${goodsTotal.toFixed(2)} BYN`;
+
+            // Список товаров в корзине
+            const listEl = document.getElementById('cartItemsList');
+            if (state.cart.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+                        <div class="text-3xl mb-2">❄️</div>
+                        <div class="font-bold text-slate-700">Ваша корзина пока пуста</div>
+                        <p class="text-xs text-slate-500 mt-1">Выберите понравившиеся фигуры или снежинки из прайса</p>
+                    </div>
+                `;
+            } else {
+                listEl.innerHTML = state.cart.map(item => `
+                    <div class="flex items-center justify-between gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-sky-700">${item.category}</div>
+                            <div class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">${item.title}</div>
+                            <div class="text-xs font-semibold text-slate-500">${item.price.toFixed(2)} BYN / шт.</div>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="updateQty(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-slate-200 hover:bg-slate-300 font-black text-slate-800">-</button>
+                            <span class="w-6 text-center text-sm font-black">${item.qty}</span>
+                            <button onclick="updateQty(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-slate-200 hover:bg-slate-300 font-black text-slate-800">+</button>
+                            <button onclick="removeItem(${item.id})" class="ml-1 text-red-500 hover:text-red-700 text-lg font-bold px-1" title="Удалить">&times;</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Баннер оптовой скидки при заказе от 300 BYN
+            const wholesaleEl = document.getElementById('wholesaleBanner');
+            if (goodsTotal >= 300) {
+                wholesaleEl.classList.remove('hidden');
+            } else {
+                wholesaleEl.classList.add('hidden');
+            }
+
+            // Расчет доставки по правилам из прайс-листа
+            const deliveryRadio = document.querySelector('input[name="deliveryType"]:checked');
+            const deliveryType = deliveryRadio ? deliveryRadio.value : 'pickup';
+
+            let deliveryCost = 0;
+            let deliveryLabel = '0.00 BYN (Самовывоз)';
+            const rbWarn = document.getElementById('rbMinWarning');
+            const submitBtn = document.getElementById('submitOrderBtn');
+
+            rbWarn.classList.add('hidden');
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            if (deliveryType === 'minsk') {
+                if (goodsTotal >= 200) {
+                    deliveryCost = 0;
+                    deliveryLabel = 'Бесплатно (заказ от 200 BYN)';
+                } else if (goodsTotal > 0) {
+                    deliveryCost = 15;
+                    deliveryLabel = '15.00 BYN (по Минску)';
+                } else {
+                    deliveryLabel = '0.00 BYN';
+                }
+            } else if (deliveryType === 'rb') {
+                deliveryCost = 0;
+                deliveryLabel = 'По тарифам Почты / Европочты';
+                if (goodsTotal > 0 && goodsTotal < 50) {
+                    rbWarn.classList.remove('hidden');
+                    document.getElementById('rbRemaining').textContent = (50 - goodsTotal).toFixed(2);
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            if (goodsTotal === 0) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+
+            const finalTotal = goodsTotal + deliveryCost;
+            document.getElementById('summaryGoods').textContent = `${goodsTotal.toFixed(2)} BYN`;
+            document.getElementById('summaryDelivery').textContent = deliveryLabel;
+            document.getElementById('summaryTotal').textContent = `${finalTotal.toFixed(2)} BYN`;
+        }
+
+        function toggleCart(open) {
+            const drawer = document.getElementById('cartDrawer');
+            if (open) {
+                renderCart();
+                drawer.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                drawer.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            if (state.cart.length === 0) return;
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const total = document.getElementById('summaryTotal').textContent;
+
+            // Показываем красивое окно подтверждения внутри корзины
+            const listEl = document.getElementById('cartItemsList');
+            state.cart = [];
+            saveCartToStorage();
+            renderCart();
+
+            listEl.innerHTML = `
+                <div class="bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-5 text-center space-y-2">
+                    <div class="text-4xl">🎄✨</div>
+                    <h3 class="text-lg font-black text-emerald-900">Спасибо, ${name}! Ваш заказ принят!</h3>
+                    <p class="text-xs sm:text-sm text-emerald-800">
+                        Мы свяжемся с вами по номеру <strong>${phone}</strong> для подтверждения деталей и сроков готовности (сумма: <strong>${total}</strong>).
+                    </p>
+                    <p class="text-xs text-slate-600 pt-2">
+                        Самовывоз: аг. Ждановичи, пер. Торный, 1Г<br>
+                        Тел.: +375 (44) 750-42-45 Михаил, +375 (29) 618-13-53 Николай
+                    </p>
+                </div>
+            `;
+            e.target.reset();
+        }
+
+        /* =============================================================
+           6. МОДАЛЬНОЕ ОКНО ИНДИВИДУАЛЬНОГО ЭСКИЗА И TOAST
+           ============================================================= */
+        function openCustomModal() {
+            document.getElementById('customOrderModal').classList.remove('hidden');
+        }
+
+        function closeCustomModal() {
+            document.getElementById('customOrderModal').classList.add('hidden');
+        }
+
+        function submitCustomRequest(e) {
+            e.preventDefault();
+            closeCustomModal();
+            e.target.reset();
+            showToast('Заявка по индивидуальному эскизу отправлена!');
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastText').textContent = msg;
+            toast.classList.remove('translate-x-full', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+            }, 2600);
+        }
+
+        function saveCartToStorage() {
+            try {
+                localStorage.setItem('ny_decor_cart_2027', JSON.stringify(state.cart));
+            } catch (e) {}
+        }
+
+        function loadCartFromStorage() {
+            try {
+                const saved = localStorage.getItem('ny_decor_cart_2027');
+                if (saved) {
+                    state.cart = JSON.parse(saved);
+                    renderCart();
+                }
+            } catch (e) {}
+        }
+
+        /* =============================================================
+           7. АНИМАЦИЯ ПАДАЮЩИХ СНЕЖИНОК НА CANVAS
+           ============================================================= */
+        function initSnowAnimation() {
+            const canvas = document.getElementById('snowCanvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const flakes = Array.from({ length: 75 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: Math.random() * 2.8 + 1,
+                speedY: Math.random() * 1.1 + 0.4,
+                speedX: Math.random() * 0.6 - 0.3,
+                alpha: Math.random() * 0.6 + 0.3
+            }));
+
+            function animateSnow() {
+                ctx.clearRect(0, 0, width, height);
+                for (const f of flakes) {
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${f.alpha})`;
+                    ctx.fill();
+
+                    f.y += f.speedY;
+                    f.x += f.speedX;
+
+                    if (f.y > height) {
+                        f.y = -5;
+                        f.x = Math.random() * width;
+                    }
+                    if (f.x > width) f.x = 0;
+                    if (f.x < 0) f.x = width;
+                }
+                requestAnimationFrame(animateSnow);
+            }
+
+            animateSnow();
+        }
+
+        window.onload = initShop;
+    </script>
+</body>
+</html>
